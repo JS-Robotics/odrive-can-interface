@@ -8,6 +8,7 @@
 
 int main(){
   std::cout << "Hello Example" << std::endl;
-  ODriveCanInterface drive;
-
+  ODriveCanInterface drive(0, "can0");
+  ODriveCanInterface drive_1(1, "can0");
+  ODriveCanInterface drive_2(2, "can0");
 }
