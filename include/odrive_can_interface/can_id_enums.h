@@ -1,0 +1,47 @@
+//
+// Created by JS-Robotics on 16.03.24.
+//
+
+#ifndef ODRIVECANINTERFACE_INCLUDE_ODRIVE_CAN_INTERFACE_CAN_ID_ENUMS_H_
+#define ODRIVECANINTERFACE_INCLUDE_ODRIVE_CAN_INTERFACE_CAN_ID_ENUMS_H_
+
+namespace ODriveCAN {
+
+enum class ID {
+  CANOPEN_NMT_MESSAGE         = 0x00,
+  ODRIVE_HEARTBEAT_MESSAGE    = 0x01,
+  ODRIVE_STOP_MESSAGE         = 0x02,
+  GET_MOTOR_ERROR             = 0x03,
+  GET_ENCODER_ERROR           = 0x04,
+  GET_SENSORLESS_ERROR        = 0x05,
+  SET_AXIS_NODE_ID            = 0x06,
+  SET_AXIS_REQUESTED_STATE    = 0x07,
+  SET_AXIS_STARTUP_CONFIG     = 0x08,
+  GET_ENCODER_ESTIMATES       = 0x09,
+  GET_ENCODER_COUNT           = 0x0A,
+  SET_CONTROLLER_MODES        = 0x0B,
+  SET_INPUT_POS               = 0x0C,
+  SET_INPUT_VEL               = 0x0D,
+  SET_INPUT_TORQUE            = 0x0E,
+  SET_LIMITS                  = 0x0F,
+  START_ANTICOGGING           = 0x10,
+  SET_TRAJ_VEL_LIMIT          = 0x11,
+  SET_TRAJ_ACCEL_LIMITS       = 0x12,
+  SET_TRAJ_INERTIA            = 0x13,
+  GET_IQ                      = 0x14,
+  GET_SENSORLESS_ESTIMATES    = 0x15,
+  REBOOT_ODRIVE               = 0x16,
+  GET_BUS_VOLTAGE_AND_CURRENT = 0x17,
+  CLEAR_ERRORS                = 0x18,
+  SET_LINEAR_COUNT            = 0x19,
+  SET_POSITION_GAIN           = 0x1A,
+  SET_VEL_GAINS               = 0x1B,
+  GET_ADC_VOLTAGE             = 0x1C,
+  GET_CONTROLLER_ERROR        = 0x1D,
+  CANOPEN_HEARTBEAT_MESSAGE   = 0x700
+};
+
+} // namespace ODriveCAN
+
+
+#endif //ODRIVECANINTERFACE_INCLUDE_ODRIVE_CAN_INTERFACE_CAN_ID_ENUMS_H_

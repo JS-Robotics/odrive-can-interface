@@ -9,11 +9,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(${PROJECT_NAME} STATIC
-    include/odrive_can_interface/odrive_can_interface.h
-    src/odrive_can_interface.cpp
+        src/odrive_can_interface.cpp
 )
-
-add_executable(main main.cpp)  ### Just a placeholder executable at the moment Just ignore this for now
 
 # Optionally, add options for building tests, examples, etc.
 option(BUILD_EXAMPLES "Build examples" OFF)
