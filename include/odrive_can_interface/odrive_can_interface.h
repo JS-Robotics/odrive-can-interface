@@ -21,23 +21,37 @@
 
 class ODriveCanInterface : public CanMessageHandler {
  public:
-  ODriveCanInterface(int can_id, const std::string &can_link) : can_id_(can_id), can_link_(can_link) {
-    std::cout << "Constructor - can ID: " << can_id_ << " can_link: " << can_link_ << std::endl;
+  ODriveCanInterface(int can_id, CanInterfaceManager &manager)
+      : can_id_(can_id), manager_(manager) {
+    std::cout << "Constructor - can ID: " << can_id_ <<  std::endl;
 
-    CanInterfaceManager &manager = CanInterfaceManager::GetInstance(can_link_);
+//    manager_ = &CanInterfaceManager::GetInstance(can_link_);
     // Register this interface with the manager
-    manager.AddODriveInterface(can_id_, this);
+    manager_.AddODriveInterface(can_id_, this);
 
+  }
+
+  ~ODriveCanInterface() {
+    std::cout << "Destructor - can ID: " << can_id_  << std::endl;
   }
 
   void HandleCanMessage(const can_frame &frame) override {
     std::cout << "HandleCanMessage" << std::endl;
   }
 
+  void SetInputVel(double velocity) {
+    // Construct the CAN message for setting velocity.
+    can_frame frame;
+    // Populate the frame with appropriate ID and data for setting velocity.
+    // Note: The specifics here will depend on your ODrive's CAN protocol.
+
+    // Send the message through the CanInterfaceManager.
+    manager_.SendCanMessage(frame);
+  }
+
  private:
   const int can_id_ = 0x00;
-  const std::string can_link_;
-
+  CanInterfaceManager &manager_;
 };
 
 #endif //ODRIVE_CAN_INTERFACE_ODRIVE_CAN_INTERFACE_H_
