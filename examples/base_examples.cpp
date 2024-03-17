@@ -26,16 +26,21 @@ int main(){
 
   CanInterfaceManager& manager = CanInterfaceManager::GetInstance("can0");
 
+  if(!manager.StartCanLink()){
+    return 404;
+  }
+
+
   std::cout << "Hello Example" << std::endl;
   ODriveCanInterface drive(0, manager);
-  ODriveCanInterface drive_1(1, manager);
-  ODriveCanInterface drive_2(2, manager);
+//  ODriveCanInterface drive_1(1, manager);
+//  ODriveCanInterface drive_2(2, manager);
 
   while (!shutdown_requested) {
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     drive.SetInputVel(10.0);
-    drive_1.SetInputVel(12.0);
-    drive_2.SetInputVel(13.0);
+//    drive_1.SetInputVel(12.0);
+//    drive_2.SetInputVel(13.0);
   }
 
 }
