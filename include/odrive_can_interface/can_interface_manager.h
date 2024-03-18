@@ -86,8 +86,11 @@ class CanInterfaceManager {
     return true;
   }
 
-  void SendCanMessage(const can_frame &frame) {
+  void SendCanMessage(const can_frame &frame) const {
 //    std::cout << "WritingCanMessage" << std::endl;
+    if (write(socket_, &frame, sizeof(struct can_frame)) != sizeof(struct can_frame)) {
+      perror("Write");
+    }
   }
 
  private:
@@ -152,6 +155,7 @@ class CanInterfaceManager {
   std::mutex map_mutex_;
   int socket_;
 
-  static constexpr int kIdMaskFilter_ = 0x7FFFF0;// Masks to preserve only relevant node_id bits and shifts (Zeros the 4 last bits)
+  static constexpr int
+      kIdMaskFilter_ = 0x7FFFF0;// Masks to preserve only relevant node_id bits and shifts (Zeros the 4 last bits)
 };
 #endif //ODRIVECANINTERFACE_INCLUDE_CAN_INTERFACE_MANAGER_H_

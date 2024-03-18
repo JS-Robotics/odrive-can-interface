@@ -1,0 +1,17 @@
+//
+// Created by sondre on 18.03.24.
+//
+
+#ifndef ODRIVECANINTERFACE_INCLUDE_ODRIVE_CAN_INTERFACE_ODRIVE_FEEDBACK_H_
+#define ODRIVECANINTERFACE_INCLUDE_ODRIVE_CAN_INTERFACE_ODRIVE_FEEDBACK_H_
+
+struct EncoderEstimates{
+  float position;
+  float velocity;
+};
+
+enum class ODriveFeedback{
+
+};
+
+#endif //ODRIVECANINTERFACE_INCLUDE_ODRIVE_CAN_INTERFACE_ODRIVE_FEEDBACK_H_

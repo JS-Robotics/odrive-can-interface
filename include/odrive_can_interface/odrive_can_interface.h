@@ -36,17 +36,41 @@ class ODriveCanInterface : public CanMessageHandler {
   }
 
   void HandleCanMessage(const can_frame &frame) override {
-    std::cout << "HandleCanMessage" << std::endl;
+    std::cout << "------------------------------------------------------------------------------" << std::endl;
+    std::cout << "Received frame with ID: " << std::hex << frame.can_id;
+    std::cout << " and data: ";
+    for (int k = 0; k < frame.can_dlc; k++) {
+      std::cout << std::hex << static_cast<int>(frame.data[k]) << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "------------------------------------------------------------------------------" << std::endl;
   }
 
-  void SetInputVel(double velocity) {
-    // Construct the CAN message for setting velocity.
-    can_frame frame;
-    // Populate the frame with appropriate ID and data for setting velocity.
-    // Note: The specifics here will depend on your ODrive's CAN protocol.
+  void SetAxisState(ODriveEnums::AxisState axis_state){
+    can_frame state_can_frame{};
 
+    state_can_frame.can_id = can_id_ << 5 |  static_cast<int>(ODriveCAN::ID::SET_AXIS_REQUESTED_STATE);
+    state_can_frame.can_dlc = 4;    // Data length: 4 byte is enough to command the state change
+    auto state = static_cast<uint32_t>(axis_state);; // Assuming 8 is the value for AXIS_STATE_CLOSED_LOOP_CONTROL
+    memcpy(state_can_frame.data, &state, sizeof(state)); // This ensures all 4 bytes are set correctly
+    manager_.SendCanMessage(state_can_frame);
+  }
+
+
+  /*!
+   * @param velocity - Velocity input in rev/s
+   * @param feed_forward_torque - TODO() figure ut unit
+   */
+  void SetInputVel(float velocity, float feed_forward_torque) {
+    can_frame vel_can_frame{};
+
+    vel_can_frame.can_id = (can_id_ << 5) | static_cast<int>(ODriveCAN::ID::SET_INPUT_VEL);
+    vel_can_frame.can_dlc = 8; // Data length code: 8 bytes (4 for velocity, 4 for torque feed-forward)
+
+    memcpy(vel_can_frame.data, &velocity, sizeof(velocity));
+    memcpy(vel_can_frame.data + 4, &feed_forward_torque, sizeof(feed_forward_torque));
     // Send the message through the CanInterfaceManager.
-    manager_.SendCanMessage(frame);
+    manager_.SendCanMessage(vel_can_frame);
   }
 
  private:
