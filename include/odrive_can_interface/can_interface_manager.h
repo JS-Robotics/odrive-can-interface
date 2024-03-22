@@ -33,8 +33,8 @@ class CanInterfaceManager {
   CanInterfaceManager &operator=(const CanInterfaceManager &) = delete;
 
   // Static method for accessing the single instance
-  static CanInterfaceManager &GetInstance(const std::string &interface_name) {
-    static CanInterfaceManager instance(interface_name);
+  static CanInterfaceManager &GetInstance(const std::string &interface_name, uint32_t read_time_ms = 10) {
+    static CanInterfaceManager instance(interface_name, read_time_ms);
     return instance;
   }
 
@@ -94,8 +94,12 @@ class CanInterfaceManager {
   }
 
  private:
-  explicit CanInterfaceManager(const std::string &interface_name) : interface_name_(interface_name), socket_(-1) {
-    std::cout << "CanInterfaceManager Constructor with interface name: " << interface_name_ << std::endl;
+  explicit CanInterfaceManager(const std::string &interface_name, uint32_t read_time_ms) :
+      interface_name_(interface_name),
+      socket_(-1),
+      read_time_ms_(read_time_ms) {
+    std::cout << "CanInterfaceManager Constructor with interface name: '" << interface_name_ << "'. With read time: "
+              << read_time_ms << "[ms] - " << static_cast<uint32_t>(1000 / read_time_ms_) << "[Hz]" << std::endl;
   };
 
   ~CanInterfaceManager() {
@@ -128,7 +132,7 @@ class CanInterfaceManager {
           DispatchMessage(node_id, frame);
         }
       }
-      std::this_thread::sleep_for(std::chrono::milliseconds(1));  //TODO() make system the ensure packages are emptied fast enough instead
+      std::this_thread::sleep_for(std::chrono::milliseconds(read_time_ms_));  //TODO() make system the ensure packages are emptied fast enough instead
     }
   }
 
@@ -154,6 +158,7 @@ class CanInterfaceManager {
   std::thread read_thread_;
   std::mutex map_mutex_;
   int socket_;
+  uint32_t read_time_ms_;  //Default to 10ms [100Hz]
 
   static constexpr int
       kIdMaskFilter_ = 0x7FFFF0;// Masks to preserve only relevant node_id bits and shifts (Zeros the 4 last bits)

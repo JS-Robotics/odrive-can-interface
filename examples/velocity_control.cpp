@@ -10,7 +10,7 @@
 
 int main() {
 
-  CanInterfaceManager &manager = CanInterfaceManager::GetInstance("can0");
+  CanInterfaceManager &manager = CanInterfaceManager::GetInstance("can0", 1);
 
   if (!manager.StartCanLink()) {
     return 404;
@@ -21,16 +21,18 @@ int main() {
   ODriveCanInterface drive(3, manager);
 
   drive.SetAxisState(ODriveEnums::AxisState::AXIS_STATE_CLOSED_LOOP_CONTROL);
-  drive.SetInputVel(50.0,0);
+  drive.SetInputVel(50.0, 0);
 
   ODriveFeedback feedback;
-  for (int i = 0; i < 100; i++){
+  for (int i = 0; i < 100; i++) {
     feedback = drive.GetFeedback();
     std::cout << "Velocity: " << feedback.estimate_velocity << "[rev/s] - Position: " << feedback.estimate_position << "[rev]" << std::endl;
+    std::cout << "EncoderCount: " << feedback.encoder_count_cpr << "[c] - Shadow count: " << feedback.encoder_shadow_count << "[c]" << std::endl;
+    std::cout << "Voltage: " << feedback.bus_voltage << "[V] - Current: " << feedback.bus_current << "[A]" << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(4000/100));
   }
 
-  drive.SetInputVel(0.0,0);
+  drive.SetInputVel(0.0, 0);
   std::this_thread::sleep_for(std::chrono::milliseconds(4000));
   drive.SetAxisState(ODriveEnums::AxisState::AXIS_STATE_IDLE);
 
