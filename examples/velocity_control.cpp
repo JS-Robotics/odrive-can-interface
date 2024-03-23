@@ -9,16 +9,14 @@
 #include "odrive_can_interface/can_interface_manager.h"
 
 int main() {
+  std::cout << "Hello Example" << std::endl;
 
   CanInterfaceManager &manager = CanInterfaceManager::GetInstance("can0", 1);
+  ODriveCanInterface drive(3, manager);
 
   if (!manager.StartCanLink()) {
     return 404;
   }
-
-  std::cout << "Hello Example" << std::endl;
-
-  ODriveCanInterface drive(3, manager);
 
   drive.SetAxisState(ODriveEnums::AxisState::AXIS_STATE_CLOSED_LOOP_CONTROL);
   drive.SetInputVel(50.0, 0);

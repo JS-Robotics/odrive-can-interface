@@ -2,44 +2,25 @@
 // Created by JS-Robotics on 16.03.24.
 //
 
-
-#include <iostream>
-#include <csignal>
-
 #include "odrive_can_interface/odrive_can_interface.h"
 #include "odrive_can_interface/can_interface_manager.h"
 
-bool shutdown_requested = false;
+int main() {
 
-inline void stop_handler(int) {
-  shutdown_requested = true;
-  std::cout << "preparing to shut down..." << std::endl;
-}
+  // Create a socket CAN interface manager instance
+  CanInterfaceManager &manager = CanInterfaceManager::GetInstance("can0");
 
-inline void setup_signal_handlers() {
-  signal(SIGINT, stop_handler);
-  signal(SIGTERM, stop_handler);
-}
+  // Create an instance of the ODriveCanInterface
+  ODriveCanInterface drive(0, manager);
 
-int main(){
-  setup_signal_handlers();
-
-  CanInterfaceManager& manager = CanInterfaceManager::GetInstance("can0");
-
-  if(!manager.StartCanLink()){
+  // Start the socketCAN link
+  if (!manager.StartCanLink()) {
     return 404;
   }
 
-
-  std::cout << "Hello Example" << std::endl;
-
-  ODriveCanInterface drive(0, manager);
-
-  while (!shutdown_requested) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-//    drive.SetInputVel(10.0, 0);
-//    drive_1.SetInputVel(12.0);
-//    drive_2.SetInputVel(13.0);
-  }
+  //Now the ODrive interface object can be used
+  ODriveFeedback feedback = drive.GetFeedback();
+  std::cout << "Bus voltage: " << feedback.bus_voltage << std::endl;
+  drive.SetInputVel(12.0, 0.0);
 
 }

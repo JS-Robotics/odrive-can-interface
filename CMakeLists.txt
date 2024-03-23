@@ -19,6 +19,8 @@ if (BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif ()
 
+add_subdirectory(tools/can_simulator)
+
 option(BUILD_TESTS "Build tests" OFF)
 #set(BUILD_TESTS ON) # Uncomment to default to building tests
 if (BUILD_TESTS)
