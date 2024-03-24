@@ -1,5 +1,5 @@
 //
-// Created by sondre on 18.03.24.
+// Created by JS-Robotics on 18.03.24.
 //
 
 #ifndef ODRIVECANINTERFACE_INCLUDE_ODRIVE_CAN_INTERFACE_ODRIVE_FEEDBACK_H_

@@ -1,6 +1,8 @@
 //
 // Created by JS-Robotics on 16.03.24.
 //
+
+
 #include "odrive_can_interface/odrive_can_interface.h"
 
 void ODriveCanInterface::ExtractMotorError(const can_frame &frame) {

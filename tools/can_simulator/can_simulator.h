@@ -1,5 +1,5 @@
 //
-// Created by sondre on 23.03.24.
+// Created by JS-Robotics on 23.03.24.
 //
 
 #ifndef ODRIVECANINTERFACE_TOOLS_CAN_SIMULATOR_CAN_SIMULATOR_H_
