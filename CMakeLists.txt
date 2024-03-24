@@ -12,6 +12,13 @@ add_library(${PROJECT_NAME} STATIC
         src/odrive_can_interface.cpp
 )
 
+# Detect if we are on an ARM aarch64 (ARM 64-bit) architecture
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    target_link_libraries(${PROJECT_NAME} Threads::Threads)
+endif()
+
 # Optionally, add options for building tests, examples, etc.
 option(BUILD_EXAMPLES "Build examples" OFF)
 set(BUILD_EXAMPLES ON) # Use to override BUILD_EXAMPLES option
